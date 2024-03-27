@@ -11,8 +11,8 @@ class ReadPage extends StatefulWidget {
 }
 
 class _ReadPageState extends State<ReadPage> {
-  late final AudioPlayer audioPlayer;
-  bool isPlaying = false;
+  late final AudioPlayer _audioPlayer;
+  bool _isPlaying = false;
 
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
@@ -26,21 +26,21 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void dispose() {
-    audioPlayer.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
   Future initPlayer() async {
-    audioPlayer = AudioPlayer();
-    audioPlayer.onDurationChanged.listen((Duration newDuration) {
+    _audioPlayer = AudioPlayer();
+    _audioPlayer.onDurationChanged.listen((Duration newDuration) {
       setState(() => _duration = newDuration);
     });
 
-    audioPlayer.onPositionChanged.listen((Duration newPosition) {
+    _audioPlayer.onPositionChanged.listen((Duration newPosition) {
       setState(() => _position = newPosition);
     });
 
-    audioPlayer.onPlayerComplete.listen((_) {
+    _audioPlayer.onPlayerComplete.listen((_) {
       setState(() {
         _position = _duration;
       });
@@ -48,12 +48,12 @@ class _ReadPageState extends State<ReadPage> {
   }
 
   void _togglePlayer() async {
-    if (isPlaying) {
-      audioPlayer.pause();
-      isPlaying = false;
+    if (_isPlaying) {
+      _audioPlayer.pause();
+      _isPlaying = false;
     } else {
-      audioPlayer.play(DeviceFileSource('assets/audio/RoroJonggrang.mp3'));
-      isPlaying = true;
+      _audioPlayer.play(DeviceFileSource('assets/audio/RoroJonggrang.mp3'));
+      _isPlaying = true;
     }
     setState(() {});
   }
@@ -68,7 +68,7 @@ class _ReadPageState extends State<ReadPage> {
         _currentSpeed = 1.0;
       }
     });
-    audioPlayer.setPlaybackRate(_currentSpeed);
+    _audioPlayer.setPlaybackRate(_currentSpeed);
   }
 
   @override
@@ -76,7 +76,7 @@ class _ReadPageState extends State<ReadPage> {
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
-        title: Text('halaman baca'),
+        title: const Text('halaman baca'),
         backgroundColor: Colors.green[200],
       ),
       body: Center(
@@ -108,7 +108,7 @@ class _ReadPageState extends State<ReadPage> {
                     backgroundColor: Colors.green[200],
                     mini: true,
                     elevation: 0,
-                    child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+                    child: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
                   ),
                   const SizedBox(
                     width: 8,
@@ -124,7 +124,7 @@ class _ReadPageState extends State<ReadPage> {
                     child: Slider(
                       value: _position.inSeconds.toDouble(),
                       onChanged: (value) async {
-                        await audioPlayer
+                        await _audioPlayer
                             .seek(Duration(seconds: value.toInt()));
                         setState(() {});
                       },
