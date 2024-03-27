@@ -12,7 +12,7 @@ class ReadPage extends StatefulWidget {
 
 class _ReadPageState extends State<ReadPage> {
   late final AudioPlayer _audioPlayer;
-  bool _isPlaying = false;
+  bool isPlaying = false;
 
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
@@ -48,12 +48,12 @@ class _ReadPageState extends State<ReadPage> {
   }
 
   void _togglePlayer() async {
-    if (_isPlaying) {
+    if (isPlaying) {
       _audioPlayer.pause();
-      _isPlaying = false;
+      isPlaying = false;
     } else {
       _audioPlayer.play(DeviceFileSource('assets/audio/RoroJonggrang.mp3'));
-      _isPlaying = true;
+      isPlaying = true;
     }
     setState(() {});
   }
@@ -108,7 +108,7 @@ class _ReadPageState extends State<ReadPage> {
                     backgroundColor: Colors.green[200],
                     mini: true,
                     elevation: 0,
-                    child: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                    child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
                   ),
                   const SizedBox(
                     width: 8,
